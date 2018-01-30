@@ -1,0 +1,9 @@
+{
+  "presets": [
+    "env"
+  ],
+  "ignore":[
+    "lib",
+    "node_modules"
+  ]
+}
