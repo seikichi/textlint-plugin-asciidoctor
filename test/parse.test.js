@@ -190,6 +190,32 @@ test("blockquote", () => {
   expect(node.children[0]).toEqual(
     oc({
       type: "BlockQuote",
+      children: [
+        oc({
+          type: 'Paragraph',
+          children: [
+            oc({
+              type: 'Str',
+              value: 'blockquote',
+            })
+          ]
+        })
+      ]
+    })
+  );
+});
+
+test("code", () => {
+  const node = parse(`\
+[source,ruby]
+----
+puts 'Hello, world!'
+----
+`);
+  expect(node.children[0]).toEqual(
+    oc({
+      type: "CodeBlock",
+      value: "puts 'Hello, world!'"
     })
   );
 });

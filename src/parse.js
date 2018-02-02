@@ -31,6 +31,8 @@ class Converter {
       return this.convertDefinitionList(elem, lineno);
     } else if (elem.context === "quote") {
       return this.convertQuote(elem, lineno);
+    } else if (elem.context === "listing") {
+      return this.convertListing(elem, lineno);
     }
     return null;
   }
@@ -72,6 +74,16 @@ class Converter {
       return null;
     }
     return { type: "BlockQuote", children, raw, ...this.locAndRangeFrom(children) };
+  }
+
+  convertListing(elem, { min, max }) {
+    const raw = elem.$source();
+    const loc = this.findLocation(elem.$lines(), { min, max });
+    if (!loc) {
+      return null;
+    }
+    const range = this.locationToRange(loc);
+    return { type: "CodeBlock", value: raw, loc, range, raw };
   }
 
   convertList(elem, { min, max }) {
