@@ -157,3 +157,30 @@ test("check list", () => {
     })
   ]);
 });
+
+test.only("labeled list", () => {
+  const node = parse("A:: B\nC:: D");
+  expect(node.children[0]).toEqual(
+    oc({
+      type: "List",
+      children: [
+        oc({
+          type: "ListItem",
+          children: [oc({ children: [oc({ value: "A" })] })]
+        }),
+        oc({
+          type: "ListItem",
+          children: [oc({ children: [oc({ value: "B" })] })]
+        }),
+        oc({
+          type: "ListItem",
+          children: [oc({ children: [oc({ value: "C" })] })]
+        }),
+        oc({
+          type: "ListItem",
+          children: [oc({ children: [oc({ value: "D" })] })]
+        })
+      ]
+    })
+  );
+});

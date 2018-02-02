@@ -27,6 +27,8 @@ class Converter {
       return this.convertList(elem, lineno);
     } else if (elem.context === "list_item") {
       return this.convertListItem(elem, lineno);
+    } else if (elem.context === "dlist") {
+      return this.convertDefinitionList(elem, lineno);
     }
   }
 
@@ -63,6 +65,24 @@ class Converter {
   convertList(elem, { min, max }) {
     const raw = null; // TODO: fix asciidoc/asciidoc
     const children = this.convertElementList(elem.$blocks(), {
+      min,
+      max,
+      update: false
+    });
+    if (children.length === 0) {
+      return null;
+    }
+    return { type: "List", children, raw, ...this.locAndRangeFrom(children) };
+  }
+
+  convertDefinitionList(elem, { min, max }) {
+    const raw = null; // TODO: fix asciidoc/asciidoc
+    const concat = Array.prototype.concat;
+    const blocks = concat.apply(
+      [],
+      elem.$blocks().map(([terms, item]) => [...terms, item])
+    );
+    const children = this.convertElementList(blocks, {
       min,
       max,
       update: false
