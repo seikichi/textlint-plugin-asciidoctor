@@ -29,7 +29,10 @@ class Converter {
       return this.convertListItem(elem, lineno);
     } else if (elem.context === "dlist") {
       return this.convertDefinitionList(elem, lineno);
+    } else if (elem.context === "quote") {
+      return this.convertQuote(elem, lineno);
     }
+    return null;
   }
 
   convertDocument(elem, lineno) {
@@ -60,6 +63,15 @@ class Converter {
       range,
       raw
     };
+  }
+
+  convertQuote(elem, { min, max }) {
+    const raw = null; // TODO: fix asciidoc/asciidoc
+    const children = this.convertElementList(elem.$blocks(), { min, max, update: false });
+    if (children.length === 0) {
+      return null;
+    }
+    return { type: "BlockQuote", children, raw, ...this.locAndRangeFrom(children) };
   }
 
   convertList(elem, { min, max }) {

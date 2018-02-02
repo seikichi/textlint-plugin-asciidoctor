@@ -158,7 +158,7 @@ test("check list", () => {
   ]);
 });
 
-test.only("labeled list", () => {
+test("labeled list", () => {
   const node = parse("A:: B\nC:: D");
   expect(node.children[0]).toEqual(
     oc({
@@ -184,3 +184,13 @@ test.only("labeled list", () => {
     })
   );
 });
+
+test("blockquote", () => {
+  const node = parse("____\nblockquote\n____\n");
+  expect(node.children[0]).toEqual(
+    oc({
+      type: "BlockQuote",
+    })
+  );
+});
+
