@@ -70,28 +70,41 @@ class Converter {
     if (children.length === 0) {
       return null;
     }
+    return { type: "List", children, raw, ...this.locAndRangeFrom(children) };
+  }
+
+  convertListItem(elem, lineno) {
+    const raw = null; // TODO: fix asciidoc/asciidoc
+    const p = this.createParagraph(elem.text, lineno);
+    const blocks = this.convertElementList(elem.$blocks(), lineno);
+    const children = [p, ...blocks];
+    return {
+      type: "ListItem",
+      children,
+      raw,
+      ...this.locAndRangeFrom(children)
+    };
+  }
+
+  createParagraph(raw, lineno) {
+    const loc = this.findLocation(raw.split(/\n/), lineno);
+    const range = this.locationToRange(loc);
+    return {
+      type: "Paragraph",
+      children: [{ type: "Str", value: raw, loc, range, raw }],
+      loc,
+      range,
+      raw
+    };
+  }
+
+  locAndRangeFrom(children) {
     const loc = {
       start: children[0].loc.start,
       end: children[children.length - 1].loc.end
     };
     const range = this.locationToRange(loc);
-    return { type: "List", children, loc, range, raw };
-  }
-
-  convertListItem(elem, lineno) {
-    const raw = elem.text;
-    const loc = this.findLocation(raw.split(/\n/), lineno);
-    const range = this.locationToRange(loc);
-    const children = [
-      {
-        type: "Paragraph",
-        children: [{ type: "Str", value: raw, loc, range, raw }],
-        loc,
-        range,
-        raw
-      }
-    ];
-    return { type: "ListItem", children, loc, range, raw };
+    return { loc, range };
   }
 
   positionToIndex({ line, column }) {

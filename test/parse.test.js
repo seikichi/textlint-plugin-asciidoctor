@@ -1,5 +1,7 @@
 import parse from "../src/parse";
 
+const oc = jasmine.objectContaining;
+
 test("single word", () => {
   const node = parse("text");
   const loc = { start: { line: 1, column: 0 }, end: { line: 1, column: 4 } };
@@ -48,14 +50,77 @@ test("unordered list", () => {
         children: [{ type: "Str", value: "text", loc, range, raw }],
         loc,
         range,
-        raw,
-      },
+        raw
+      }
     ],
     loc,
     range,
-    raw,
+    raw: null
   };
   expect(node.children[0].children[0]).toEqual(expected);
+});
+
+test("nested unordered list", () => {
+  const node = parse(`\
+* value 1
+** value 2
+* value 3
+`);
+
+  expect(node).toEqual(
+    oc({
+      type: "Document",
+      children: [
+        oc({
+          type: "List",
+          children: [
+            oc({
+              type: "ListItem",
+              children: [
+                oc({
+                  type: "Paragraph",
+                  children: [
+                    oc({ type: "Str", value: "value 1", range: [2, 9] })
+                  ]
+                }),
+                oc({
+                  type: "List",
+                  children: [
+                    oc({
+                      type: "ListItem",
+                      children: [
+                        oc({
+                          type: "Paragraph",
+                          children: [
+                            oc({
+                              type: "Str",
+                              value: "value 2",
+                              range: [13, 20]
+                            })
+                          ]
+                        })
+                      ]
+                    })
+                  ]
+                })
+              ]
+            }),
+            oc({
+              type: "ListItem",
+              children: [
+                oc({
+                  type: "Paragraph",
+                  children: [
+                    oc({ type: "Str", value: "value 3", range: [23, 30] })
+                  ]
+                })
+              ]
+            })
+          ]
+        })
+      ]
+    })
+  );
 });
 
 test("ordered list", () => {
@@ -71,12 +136,12 @@ test("ordered list", () => {
         children: [{ type: "Str", value: "text", loc, range, raw }],
         loc,
         range,
-        raw,
-      },
+        raw
+      }
     ],
     loc,
     range,
-    raw,
+    raw: null
   };
   expect(node.children[0].children[0]).toEqual(expected);
 });
