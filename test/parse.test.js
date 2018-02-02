@@ -145,3 +145,15 @@ test("ordered list", () => {
   };
   expect(node.children[0].children[0]).toEqual(expected);
 });
+
+test("check list", () => {
+  const node = parse("* [*] checked\n* [ ] not checked");
+  expect(node.children[0].children).toEqual([
+    oc({
+      children: [oc({ children: [oc({ type: "Str", value: "checked" })] })]
+    }),
+    oc({
+      children: [oc({ children: [oc({ type: "Str", value: "not checked" })] })]
+    })
+  ]);
+});
