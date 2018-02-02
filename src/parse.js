@@ -11,7 +11,11 @@ class Converter {
     for (let line of this.lines) {
       this.chars.push(this.chars[this.chars.length - 1] + line.length + 1);
     }
-    return this.convertElement(doc, { min: 1, max: this.lines.length, update: true });
+    return this.convertElement(doc, {
+      min: 1,
+      max: this.lines.length,
+      update: true
+    });
   }
 
   convertElement(elem, lineno) {
@@ -29,8 +33,13 @@ class Converter {
   convertDocument(elem, lineno) {
     const raw = elem.$source();
     const children = this.convertElementList(elem.$blocks(), lineno);
-    if (children.length === 0) { return null; }
-    const loc = { start: children[0].loc.start, end: children[children.length - 1].loc.end };
+    if (children.length === 0) {
+      return null;
+    }
+    const loc = {
+      start: children[0].loc.start,
+      end: children[children.length - 1].loc.end
+    };
     const range = this.locationToRange(loc);
     return { type: "Document", children, loc, range, raw };
   }
@@ -47,15 +56,24 @@ class Converter {
       children: [{ type: "Str", value: raw, loc, range, raw }],
       loc,
       range,
-      raw,
+      raw
     };
   }
 
   convertList(elem, { min, max }) {
     const raw = null; // TODO: fix asciidoc/asciidoc
-    const children = this.convertElementList(elem.$blocks(), { min, max, update: false });
-    if (children.length === 0) { return null; }
-    const loc = { start: children[0].loc.start, end: children[children.length - 1].loc.end };
+    const children = this.convertElementList(elem.$blocks(), {
+      min,
+      max,
+      update: false
+    });
+    if (children.length === 0) {
+      return null;
+    }
+    const loc = {
+      start: children[0].loc.start,
+      end: children[children.length - 1].loc.end
+    };
     const range = this.locationToRange(loc);
     return { type: "List", children, loc, range, raw };
   }
@@ -64,13 +82,15 @@ class Converter {
     const raw = elem.text;
     const loc = this.findLocation(raw.split(/\n/), lineno);
     const range = this.locationToRange(loc);
-    const children = [{
-      type: "Paragraph",
-      children: [{ type: "Str", value: raw, loc, range, raw }],
-      loc,
-      range,
-      raw,
-    }]
+    const children = [
+      {
+        type: "Paragraph",
+        children: [{ type: "Str", value: raw, loc, range, raw }],
+        loc,
+        range,
+        raw
+      }
+    ];
     return { type: "ListItem", children, loc, range, raw };
   }
 
@@ -115,10 +135,11 @@ class Converter {
 
       const lastLine = lines[lines.length - 1];
       const endLineNo = i + lines.length - 1;
-      const endColumn = this.lines[endLineNo - 1].indexOf(lastLine) + lastLine.length
+      const endColumn =
+        this.lines[endLineNo - 1].indexOf(lastLine) + lastLine.length;
       return {
         start: { line: i, column: this.lines[i - 1].indexOf(lines[0]) },
-        end: { line: endLineNo, column: endColumn },
+        end: { line: endLineNo, column: endColumn }
       };
     }
     return null;
