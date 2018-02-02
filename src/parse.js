@@ -23,7 +23,7 @@ class Converter {
       return this.convertDocument(elem, lineno);
     } else if (elem.context === "paragraph") {
       return this.convertParagraph(elem, lineno);
-    } else if (elem.context === "ulist") {
+    } else if (elem.context === "ulist" || elem.context === "olist") {
       return this.convertList(elem, lineno);
     } else if (elem.context === "list_item") {
       return this.convertListItem(elem, lineno);

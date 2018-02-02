@@ -48,12 +48,35 @@ test("unordered list", () => {
         children: [{ type: "Str", value: "text", loc, range, raw }],
         loc,
         range,
-        raw
-      }
+        raw,
+      },
     ],
     loc,
     range,
-    raw
+    raw,
+  };
+  expect(node.children[0].children[0]).toEqual(expected);
+});
+
+test("ordered list", () => {
+  const node = parse(". text");
+  const loc = { start: { line: 1, column: 2 }, end: { line: 1, column: 6 } };
+  const range = [2, 6];
+  const raw = "text";
+  const expected = {
+    type: "ListItem",
+    children: [
+      {
+        type: "Paragraph",
+        children: [{ type: "Str", value: "text", loc, range, raw }],
+        loc,
+        range,
+        raw,
+      },
+    ],
+    loc,
+    range,
+    raw,
   };
   expect(node.children[0].children[0]).toEqual(expected);
 });
