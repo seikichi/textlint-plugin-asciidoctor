@@ -15,6 +15,7 @@ using [asciidoctor.js](https://github.com/asciidoctor/asciidoctor.js).
 
 - Currently, some syntax (e.g., comment, preamble) are not supported.
   - If you find unsupported syntax, please create an issue.
+  - See [test code](test/parse.test.js) for details.
 
 ## Usage
 
