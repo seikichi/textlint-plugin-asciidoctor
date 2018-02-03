@@ -1,12 +1,18 @@
 # textlint-plugin-asciidoctor
 
-[Asciidoctor](http://asciidoctor.org/ "Asciidoctor") support for [textlint](https://github.com/textlint/textlint "textlint").
+[Asciidoctor](http://asciidoctor.org/ "Asciidoctor") support for [textlint](https://github.com/textlint/textlint "textlint")
+using [asciidoctor.js](https://github.com/asciidoctor/asciidoctor.js).
 
 ## Installation
 
 ```sh
 > npm install textlint-plugin-asciidoctor
 ```
+
+## Limitation
+
+- Currently, some syntax (e.g., comment, preamble) are not supported.
+  - If you find unsupported syntax, please create an issue.
 
 ## Usage
 
@@ -40,6 +46,14 @@ http://asciidoctor.org/docs/asciidoc-recommended-practices/
 > ./bin/asciidoc-to-textlint-ast.js < input.adoc | jq .
 ...
 ```
+
+or
+
+```sh
+> npm install textlint-plugin-asciidoctor
+> $(npm bin)/asciidoc-to-textlint-ast < input.adoc | jq .
+```
+
 
 ## Contributing
 
