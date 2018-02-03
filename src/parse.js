@@ -37,10 +37,12 @@ class Converter {
       return this.convertQuote(elem, lineno);
     } else if (elem.context === "listing") {
       return this.convertListing(elem, lineno);
-    } else if (elem.context == "section") {
+    } else if (elem.context === "section") {
       return this.convertSection(elem, lineno);
+    } else if (elem.context === "table") {
+      return this.convertTable(elem, lineno);
     }
-    return null;
+    return [];
   }
 
   convertDocument(elem, lineno) {
@@ -175,6 +177,80 @@ class Converter {
         children,
         raw,
         ...this.locAndRangeFrom(children)
+      }
+    ];
+  }
+
+  convertTableCell(elem, lineno) {
+    const raw = elem.text;
+    const loc = this.findLocation(raw.split(/\n/), lineno);
+    const range = this.locationToRange(loc);
+    return [
+      {
+        type: "TableCell",
+        children: [
+          {
+            type: "Str",
+            value: raw,
+            loc,
+            range,
+            raw
+          }
+        ],
+        loc,
+        range,
+        raw
+      }
+    ];
+  }
+
+  convertTableRow(row, lineno) {
+    let children = [];
+    for (let cell of row) {
+      children = [...children, ...this.convertTableCell(cell, lineno)];
+    }
+    if (children.length === 0) {
+      return [];
+    }
+    const loc = {
+      start: children[0].loc.start,
+      end: children[children.length - 1].loc.end
+    };
+    const range = this.locationToRange(loc);
+    return [
+      {
+        type: "TableRow",
+        children,
+        loc,
+        range,
+        raw: ""
+      }
+    ];
+  }
+
+  convertTable(elem, { min, max }) {
+    let children = [];
+    for (let row of elem.$rows().$body()) {
+      children = [
+        ...children,
+        ...this.convertTableRow(row, { min, max, update: false })
+      ];
+    }
+    if (children.length === 0) {
+      return [];
+    }
+    const loc = {
+      start: children[0].loc.start,
+      end: children[children.length - 1].loc.end
+    };
+    const range = this.locationToRange(loc);
+    return [
+      {
+        type: "Table",
+        children,
+        loc,
+        range,
+        raw: ""
       }
     ];
   }

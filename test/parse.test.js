@@ -241,6 +241,7 @@ Hello, world!
 === Level 2 Section
 `);
 
+  testAST(node);
   expect(node.children).toEqual([
     oc({
       type: "Header",
@@ -260,6 +261,50 @@ Hello, world!
       type: "Header",
       depth: 3,
       children: [oc({ type: "Str", value: "Level 2 Section" })]
+    })
+  ]);
+});
+
+test("simple table", () => {
+  const node = parse(`\
+|===
+|A|B
+|C|D
+|===
+`);
+
+  testAST(node);
+  expect(node.children).toEqual([
+    oc({
+      type: "Table",
+      children: [
+        oc({
+          type: "TableRow",
+          children: [
+            oc({
+              type: "TableCell",
+              children: [oc({ type: "Str", value: "A" })]
+            }),
+            oc({
+              type: "TableCell",
+              children: [oc({ type: "Str", value: "B" })]
+            })
+          ]
+        }),
+        oc({
+          type: "TableRow",
+          children: [
+            oc({
+              type: "TableCell",
+              children: [oc({ type: "Str", value: "C" })]
+            }),
+            oc({
+              type: "TableCell",
+              children: [oc({ type: "Str", value: "D" })]
+            })
+          ]
+        })
+      ]
     })
   ]);
 });
