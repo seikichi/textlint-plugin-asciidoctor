@@ -34,6 +34,13 @@ http://asciidoctor.org/docs/asciidoc-recommended-practices/
 > npm test
 ```
 
+## Show TxtAST
+
+```sh
+> ./bin/asciidoc-to-textlint-ast.js < input.adoc | jq .
+...
+```
+
 ## Contributing
 
 1. Fork it!
