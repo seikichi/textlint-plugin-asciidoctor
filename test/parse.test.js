@@ -1,4 +1,5 @@
 import parse from "../src/parse";
+import { test as testAST } from "@textlint/ast-tester";
 
 const oc = jasmine.objectContaining;
 
@@ -22,6 +23,7 @@ test("single word", () => {
     range,
     raw
   };
+  testAST(node);
   expect(node).toEqual(expected);
 });
 
@@ -34,6 +36,7 @@ test("multiline paragraph", () => {
     range: [0, 9],
     raw: "text\ntext"
   };
+  testAST(node);
   expect(node.children[0].children[0]).toEqual(expected);
 });
 
@@ -55,8 +58,9 @@ test("unordered list", () => {
     ],
     loc,
     range,
-    raw: null
+    raw: "",
   };
+  testAST(node);
   expect(node.children[0].children[0]).toEqual(expected);
 });
 
@@ -67,6 +71,7 @@ test("nested unordered list", () => {
 * value 3
 `);
 
+  testAST(node);
   expect(node).toEqual(
     oc({
       type: "Document",
@@ -141,13 +146,15 @@ test("ordered list", () => {
     ],
     loc,
     range,
-    raw: null
+    raw: "",
   };
+  testAST(node);
   expect(node.children[0].children[0]).toEqual(expected);
 });
 
 test("check list", () => {
   const node = parse("* [*] checked\n* [ ] not checked");
+  testAST(node);
   expect(node.children[0].children).toEqual([
     oc({
       children: [oc({ children: [oc({ type: "Str", value: "checked" })] })]
@@ -160,6 +167,7 @@ test("check list", () => {
 
 test("labeled list", () => {
   const node = parse("A:: B\nC:: D");
+  testAST(node);
   expect(node.children[0]).toEqual(
     oc({
       type: "List",
@@ -187,6 +195,7 @@ test("labeled list", () => {
 
 test("blockquote", () => {
   const node = parse("____\nblockquote\n____\n");
+  testAST(node);
   expect(node.children[0]).toEqual(
     oc({
       type: "BlockQuote",
@@ -212,6 +221,7 @@ test("code", () => {
 puts 'Hello, world!'
 ----
 `);
+  testAST(node);
   expect(node.children[0]).toEqual(
     oc({
       type: "CodeBlock",
@@ -219,4 +229,3 @@ puts 'Hello, world!'
     })
   );
 });
-

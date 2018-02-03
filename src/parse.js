@@ -68,7 +68,7 @@ class Converter {
   }
 
   convertQuote(elem, { min, max }) {
-    const raw = null; // TODO: fix asciidoc/asciidoc
+    const raw = ""; // TODO: fix asciidoc/asciidoc
     const children = this.convertElementList(elem.$blocks(), { min, max, update: false });
     if (children.length === 0) {
       return null;
@@ -87,7 +87,7 @@ class Converter {
   }
 
   convertList(elem, { min, max }) {
-    const raw = null; // TODO: fix asciidoc/asciidoc
+    const raw = ""; // TODO: fix asciidoc/asciidoc
     const children = this.convertElementList(elem.$blocks(), {
       min,
       max,
@@ -100,7 +100,7 @@ class Converter {
   }
 
   convertDefinitionList(elem, { min, max }) {
-    const raw = null; // TODO: fix asciidoc/asciidoc
+    const raw = ""; // TODO: fix asciidoc/asciidoc
     const concat = Array.prototype.concat;
     const blocks = concat.apply(
       [],
@@ -118,7 +118,7 @@ class Converter {
   }
 
   convertListItem(elem, lineno) {
-    const raw = null; // TODO: fix asciidoc/asciidoc
+    const raw = ""; // TODO: fix asciidoc/asciidoc
     const p = this.createParagraph(elem.text, lineno);
     const blocks = this.convertElementList(elem.$blocks(), lineno);
     const children = [p, ...blocks];
