@@ -393,3 +393,14 @@ B
     oc({ type: "Paragraph", children: [oc({ type: "Str", value: "A\nB" })] })
   ]);
 });
+
+test("literal", () => {
+  const node = parse(" text\n text");
+  testAST(node);
+  expect(node.children).toEqual([
+    oc({
+      type: "Paragraph",
+      children: [oc({ type: "Str", value: "text\ntext" })]
+    })
+  ]);
+});

@@ -32,7 +32,7 @@ class Converter {
   convertElement(elem, lineno) {
     if (elem.context === "document") {
       return this.convertDocument(elem, lineno);
-    } else if (elem.context === "paragraph") {
+    } else if (elem.context === "paragraph" || elem.context === "literal") {
       return this.convertParagraph(elem, lineno);
     } else if (elem.context === "ulist" || elem.context === "olist") {
       return this.convertList(elem, lineno);
