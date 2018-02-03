@@ -185,7 +185,7 @@ class Converter {
     const raw = ""; // TODO: fix asciidoc/asciidoc
     let children = this.convertElementList(elem.$blocks(), lineno);
     if (!elem.text["$nil?"]()) {
-      children.unshift(this.createParagraph(elem.text, lineno));
+      children = [...this.createParagraph(elem.text, lineno), ...children];
     }
     if (children.length === 0) {
       return [];
@@ -290,14 +290,19 @@ class Converter {
 
   createParagraph(raw, lineno) {
     const loc = this.findLocation(raw.split(/\n/), lineno);
+    if (!loc) {
+      return [];
+    }
     const range = this.locationToRange(loc);
-    return {
-      type: "Paragraph",
-      children: [{ type: "Str", value: raw, loc, range, raw }],
-      loc,
-      range,
-      raw
-    };
+    return [
+      {
+        type: "Paragraph",
+        children: [{ type: "Str", value: raw, loc, range, raw }],
+        loc,
+        range,
+        raw
+      }
+    ];
   }
 
   locAndRangeFrom(children) {
@@ -335,8 +340,12 @@ class Converter {
   findLocation(lines, { min, max }) {
     for (let i = min; i + lines.length - 1 <= max; i++) {
       let found = true;
+      let offset = 0; // see "comment in paragraph" test case.
       for (let j = 0; j < lines.length; j++) {
-        if (this.lines[i + j - 1].indexOf(lines[j]) === -1) {
+        while (this.lines[i + j - 1 + offset].match(/^\/\//)) {
+          offset++;
+        }
+        if (this.lines[i + j - 1 + offset].indexOf(lines[j]) === -1) {
           found = false;
           break;
         }
@@ -346,7 +355,7 @@ class Converter {
       }
 
       const lastLine = lines[lines.length - 1];
-      const endLineNo = i + lines.length - 1;
+      const endLineNo = i + lines.length - 1 + offset;
       const endColumn =
         this.lines[endLineNo - 1].indexOf(lastLine) + lastLine.length;
       return {

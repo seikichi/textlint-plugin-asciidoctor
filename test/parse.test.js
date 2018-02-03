@@ -381,3 +381,15 @@ text
     oc({ children: [oc({ type: "Str", value: "text" })] })
   ]);
 });
+
+test("comment in paragraph", () => {
+  const node = parse(`
+A
+// C
+B
+`);
+  testAST(node);
+  expect(node.children).toEqual([
+    oc({ type: "Paragraph", children: [oc({ type: "Str", value: "A\nB" })] })
+  ]);
+});
