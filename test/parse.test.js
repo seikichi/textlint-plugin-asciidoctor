@@ -58,7 +58,7 @@ test("unordered list", () => {
     ],
     loc,
     range,
-    raw: "",
+    raw: ""
   };
   testAST(node);
   expect(node.children[0].children[0]).toEqual(expected);
@@ -146,7 +146,7 @@ test("ordered list", () => {
     ],
     loc,
     range,
-    raw: "",
+    raw: ""
   };
   testAST(node);
   expect(node.children[0].children[0]).toEqual(expected);
@@ -201,11 +201,11 @@ test("blockquote", () => {
       type: "BlockQuote",
       children: [
         oc({
-          type: 'Paragraph',
+          type: "Paragraph",
           children: [
             oc({
-              type: 'Str',
-              value: 'blockquote',
+              type: "Str",
+              value: "blockquote"
             })
           ]
         })
@@ -228,4 +228,38 @@ puts 'Hello, world!'
       value: "puts 'Hello, world!'"
     })
   );
+});
+
+test("headings", () => {
+  const node = parse(`\
+= Title
+
+== Level 1 Section
+
+Hello, world!
+
+=== Level 2 Section
+`);
+
+  expect(node.children).toEqual([
+    oc({
+      type: "Header",
+      depth: 1,
+      children: [oc({ type: "Str", value: "Title" })]
+    }),
+    oc({
+      type: "Header",
+      depth: 2,
+      children: [oc({ type: "Str", value: "Level 1 Section" })]
+    }),
+    oc({
+      type: "Paragraph",
+      children: [oc({ type: "Str", value: "Hello, world!" })]
+    }),
+    oc({
+      type: "Header",
+      depth: 3,
+      children: [oc({ type: "Str", value: "Level 2 Section" })]
+    })
+  ]);
 });

@@ -37,13 +37,18 @@ class Converter {
       return this.convertQuote(elem, lineno);
     } else if (elem.context === "listing") {
       return this.convertListing(elem, lineno);
+    } else if (elem.context == "section") {
+      return this.convertSection(elem, lineno);
     }
     return null;
   }
 
   convertDocument(elem, lineno) {
     const raw = elem.$source();
-    const children = this.convertElementList(elem.$blocks(), lineno);
+    let children = this.convertElementList(elem.$blocks(), lineno);
+    if (!elem.$header()["$nil?"]()) {
+      children = [this.convertHeader(elem.$header(), lineno), ...children];
+    }
     if (children.length === 0) {
       return [];
     }
@@ -55,6 +60,36 @@ class Converter {
     return [{ type: "Document", children, loc, range, raw }];
   }
 
+  convertHeader(elem, lineno) {
+    const raw = elem.title;
+    const loc = this.findLocation([raw], lineno);
+    const range = this.locationToRange(loc);
+    return {
+      type: "Header",
+      depth: elem.$level() + 1,
+      children: [{ type: "Str", value: elem.title, loc, range, raw }],
+      loc,
+      range,
+      raw
+    };
+  }
+
+  convertSection(elem, lineno) {
+    const raw = elem.title;
+    const loc = this.findLocation([raw], lineno);
+    const range = this.locationToRange(loc);
+    const header = {
+      type: "Header",
+      depth: elem.$level() + 1,
+      children: [{ type: "Str", value: elem.title, loc, range, raw }],
+      loc,
+      range,
+      raw
+    };
+    const children = this.convertElementList(elem.$blocks(), lineno);
+    return [header, ...children];
+  }
+
   convertParagraph(elem, { min, max }) {
     const raw = elem.$source();
     const loc = this.findLocation(elem.$lines(), { min, max });
@@ -62,22 +97,30 @@ class Converter {
       return [];
     }
     const range = this.locationToRange(loc);
-    return [{
-      type: "Paragraph",
-      children: [{ type: "Str", value: raw, loc, range, raw }],
-      loc,
-      range,
-      raw
-    }];
+    return [
+      {
+        type: "Paragraph",
+        children: [{ type: "Str", value: raw, loc, range, raw }],
+        loc,
+        range,
+        raw
+      }
+    ];
   }
 
   convertQuote(elem, { min, max }) {
     const raw = ""; // TODO: fix asciidoc/asciidoc
-    const children = this.convertElementList(elem.$blocks(), { min, max, update: false });
+    const children = this.convertElementList(elem.$blocks(), {
+      min,
+      max,
+      update: false
+    });
     if (children.length === 0) {
       return [];
     }
-    return [{ type: "BlockQuote", children, raw, ...this.locAndRangeFrom(children) }];
+    return [
+      { type: "BlockQuote", children, raw, ...this.locAndRangeFrom(children) }
+    ];
   }
 
   convertListing(elem, { min, max }) {
@@ -126,12 +169,14 @@ class Converter {
     const p = this.createParagraph(elem.text, lineno);
     const blocks = this.convertElementList(elem.$blocks(), lineno);
     const children = [p, ...blocks];
-    return [{
-      type: "ListItem",
-      children,
-      raw,
-      ...this.locAndRangeFrom(children)
-    }];
+    return [
+      {
+        type: "ListItem",
+        children,
+        raw,
+        ...this.locAndRangeFrom(children)
+      }
+    ];
   }
 
   createParagraph(raw, lineno) {
