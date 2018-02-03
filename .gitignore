@@ -3,5 +3,4 @@
 node_modules
 lib/
 tmp/
-package-lock.json
 coverage/
