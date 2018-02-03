@@ -6,11 +6,18 @@ const asciidoctor = require("asciidoctor.js")();
 class Converter {
   convert(text) {
     const doc = asciidoctor.load(text, { sourcemap: true });
+
+    const original_lines = text.split(/\n/);
     this.lines = doc.$source_lines();
+    while (original_lines.length > 0 && original_lines[0].match(/^\s*$/)) {
+      this.lines.unshift(original_lines.shift());
+    }
+
     this.chars = [0];
     for (let line of this.lines) {
       this.chars.push(this.chars[this.chars.length - 1] + line.length + 1);
     }
+
     const elements = this.convertElement(doc, {
       min: 1,
       max: this.lines.length,
@@ -79,6 +86,9 @@ class Converter {
   convertSection(elem, lineno) {
     const raw = elem.title;
     const loc = this.findLocation([raw], lineno);
+    if (!loc) {
+      return [];
+    }
     const range = this.locationToRange(loc);
     const header = {
       type: "Header",
