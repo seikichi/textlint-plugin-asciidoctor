@@ -3,6 +3,8 @@
 [Asciidoctor](http://asciidoctor.org/ "Asciidoctor") support for [textlint](https://github.com/textlint/textlint "textlint")
 using [asciidoctor.js](https://github.com/asciidoctor/asciidoctor.js).
 
+[![Travis CI Build Status](https://travis-ci.org/seikichi/textlint-plugin-asciidoctor.svg)](https://travis-ci.org/seikichi/textlint-plugin-asciidoctor)
+
 ## Installation
 
 ```sh
