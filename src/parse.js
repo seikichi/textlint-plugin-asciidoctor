@@ -185,18 +185,29 @@ class Converter {
     const raw = elem.text;
     const loc = this.findLocation(raw.split(/\n/), lineno);
     const range = this.locationToRange(loc);
+
+    let children = [];
+    if (elem.style === "asciidoc") {
+      children = this.convertElementList(
+        elem.$inner_document().$blocks(),
+        lineno
+      );
+    } else {
+      children = [
+        {
+          type: "Str",
+          value: raw,
+          loc,
+          range,
+          raw
+        }
+      ];
+    }
+
     return [
       {
         type: "TableCell",
-        children: [
-          {
-            type: "Str",
-            value: raw,
-            loc,
-            range,
-            raw
-          }
-        ],
+        children,
         loc,
         range,
         raw

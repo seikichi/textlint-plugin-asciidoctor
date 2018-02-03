@@ -308,3 +308,49 @@ test("simple table", () => {
     })
   ]);
 });
+
+test("complex table", () => {
+  const node = parse(`\
+|===
+a|* text
+|===
+`);
+
+  testAST(node);
+  expect(node.children).toEqual([
+    oc({
+      type: "Table",
+      children: [
+        oc({
+          type: "TableRow",
+          children: [
+            oc({
+              type: "TableCell",
+              children: [
+                oc({
+                  type: "List",
+                  children: [
+                    oc({
+                      type: "ListItem",
+                      children: [
+                        oc({
+                          type: "Paragraph",
+                          children: [
+                            oc({
+                              type: "Str",
+                              value: "text"
+                            })
+                          ]
+                        })
+                      ]
+                    })
+                  ]
+                })
+              ]
+            })
+          ]
+        })
+      ]
+    })
+  ]);
+});
