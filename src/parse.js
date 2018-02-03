@@ -24,7 +24,7 @@ class Converter {
       update: true
     });
     if (elements.length === 0) {
-      return null;
+      return this.createEmptyDocument();
     }
     return elements[0];
   }
@@ -48,6 +48,8 @@ class Converter {
       return this.convertSection(elem, lineno);
     } else if (elem.context === "table") {
       return this.convertTable(elem, lineno);
+    } else if (elem.context === 'admonition') {
+      return this.convertAdmonition(elem, lineno);
     }
     return [];
   }
@@ -178,9 +180,13 @@ class Converter {
 
   convertListItem(elem, lineno) {
     const raw = ""; // TODO: fix asciidoc/asciidoc
-    const p = this.createParagraph(elem.text, lineno);
-    const blocks = this.convertElementList(elem.$blocks(), lineno);
-    const children = [p, ...blocks];
+    let children = this.convertElementList(elem.$blocks(), lineno);
+    if (!elem.text['$nil?']()) {
+      children.unshift(this.createParagraph(elem.text, lineno));
+    }
+    if (children.length === 0) {
+      return [];
+    }
     return [
       {
         type: "ListItem",
@@ -194,6 +200,9 @@ class Converter {
   convertTableCell(elem, lineno) {
     const raw = elem.text;
     const loc = this.findLocation(raw.split(/\n/), lineno);
+    if (!loc) {
+      return [];
+    }
     const range = this.locationToRange(loc);
 
     let children = [];
@@ -276,6 +285,14 @@ class Converter {
     ];
   }
 
+  convertAdmonition(elem, { min, max }) {
+    return this.convertElementList(elem.$blocks(), {
+      min,
+      max,
+      update: false
+    });
+  }
+
   createParagraph(raw, lineno) {
     const loc = this.findLocation(raw.split(/\n/), lineno);
     const range = this.locationToRange(loc);
@@ -343,6 +360,16 @@ class Converter {
       };
     }
     return null;
+  }
+
+  createEmptyDocument() {
+    return {
+      type: "Document",
+      children: [],
+      range: [0, 0],
+      loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 0 } },
+      raw: ""
+    };
   }
 }
 
