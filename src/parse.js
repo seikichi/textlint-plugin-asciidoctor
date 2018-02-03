@@ -11,11 +11,15 @@ class Converter {
     for (let line of this.lines) {
       this.chars.push(this.chars[this.chars.length - 1] + line.length + 1);
     }
-    return this.convertElement(doc, {
+    const elements = this.convertElement(doc, {
       min: 1,
       max: this.lines.length,
       update: true
     });
+    if (elements.length === 0) {
+      return null;
+    }
+    return elements[0];
   }
 
   convertElement(elem, lineno) {
@@ -41,49 +45,49 @@ class Converter {
     const raw = elem.$source();
     const children = this.convertElementList(elem.$blocks(), lineno);
     if (children.length === 0) {
-      return null;
+      return [];
     }
     const loc = {
       start: children[0].loc.start,
       end: children[children.length - 1].loc.end
     };
     const range = this.locationToRange(loc);
-    return { type: "Document", children, loc, range, raw };
+    return [{ type: "Document", children, loc, range, raw }];
   }
 
   convertParagraph(elem, { min, max }) {
     const raw = elem.$source();
     const loc = this.findLocation(elem.$lines(), { min, max });
     if (!loc) {
-      return null;
+      return [];
     }
     const range = this.locationToRange(loc);
-    return {
+    return [{
       type: "Paragraph",
       children: [{ type: "Str", value: raw, loc, range, raw }],
       loc,
       range,
       raw
-    };
+    }];
   }
 
   convertQuote(elem, { min, max }) {
     const raw = ""; // TODO: fix asciidoc/asciidoc
     const children = this.convertElementList(elem.$blocks(), { min, max, update: false });
     if (children.length === 0) {
-      return null;
+      return [];
     }
-    return { type: "BlockQuote", children, raw, ...this.locAndRangeFrom(children) };
+    return [{ type: "BlockQuote", children, raw, ...this.locAndRangeFrom(children) }];
   }
 
   convertListing(elem, { min, max }) {
     const raw = elem.$source();
     const loc = this.findLocation(elem.$lines(), { min, max });
     if (!loc) {
-      return null;
+      return [];
     }
     const range = this.locationToRange(loc);
-    return { type: "CodeBlock", value: raw, loc, range, raw };
+    return [{ type: "CodeBlock", value: raw, loc, range, raw }];
   }
 
   convertList(elem, { min, max }) {
@@ -94,9 +98,9 @@ class Converter {
       update: false
     });
     if (children.length === 0) {
-      return null;
+      return [];
     }
-    return { type: "List", children, raw, ...this.locAndRangeFrom(children) };
+    return [{ type: "List", children, raw, ...this.locAndRangeFrom(children) }];
   }
 
   convertDefinitionList(elem, { min, max }) {
@@ -112,9 +116,9 @@ class Converter {
       update: false
     });
     if (children.length === 0) {
-      return null;
+      return [];
     }
-    return { type: "List", children, raw, ...this.locAndRangeFrom(children) };
+    return [{ type: "List", children, raw, ...this.locAndRangeFrom(children) }];
   }
 
   convertListItem(elem, lineno) {
@@ -122,12 +126,12 @@ class Converter {
     const p = this.createParagraph(elem.text, lineno);
     const blocks = this.convertElementList(elem.$blocks(), lineno);
     const children = [p, ...blocks];
-    return {
+    return [{
       type: "ListItem",
       children,
       raw,
       ...this.locAndRangeFrom(children)
-    };
+    }];
   }
 
   createParagraph(raw, lineno) {
@@ -160,7 +164,7 @@ class Converter {
   }
 
   convertElementList(elements, { min, max, update }) {
-    const children = [];
+    let children = [];
     for (let i = 0; i < elements.length; i++) {
       let next = { min, max, update };
       if (update) {
@@ -169,10 +173,7 @@ class Converter {
           next.max = elements[i + 1].$lineno();
         }
       }
-      const child = this.convertElement(elements[i], next);
-      if (child) {
-        children.push(child);
-      }
+      children = children.concat(this.convertElement(elements[i], next));
     }
     return children;
   }
