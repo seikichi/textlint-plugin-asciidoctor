@@ -355,7 +355,7 @@ a|* text
   ]);
 });
 
-test.only("admonition", () => {
+test("admonition", () => {
   const node = parse(`\
 [WARNING]
 ====
@@ -365,6 +365,19 @@ text
 
   testAST(node);
   expect(node.children).toEqual([
-    oc({ children: [oc({ type: "Str", value: "text" })] }),
+    oc({ children: [oc({ type: "Str", value: "text" })] })
+  ]);
+});
+
+test("example", () => {
+  const node = parse(`\
+====
+text
+====
+`);
+
+  testAST(node);
+  expect(node.children).toEqual([
+    oc({ children: [oc({ type: "Str", value: "text" })] })
   ]);
 });

@@ -48,8 +48,11 @@ class Converter {
       return this.convertSection(elem, lineno);
     } else if (elem.context === "table") {
       return this.convertTable(elem, lineno);
-    } else if (elem.context === 'admonition') {
-      return this.convertAdmonition(elem, lineno);
+    } else if (elem.context === "admonition" || elem.context === "example") {
+      return this.convertElementList(elem.$blocks(), {
+        ...lineno,
+        update: false
+      });
     }
     return [];
   }
@@ -181,7 +184,7 @@ class Converter {
   convertListItem(elem, lineno) {
     const raw = ""; // TODO: fix asciidoc/asciidoc
     let children = this.convertElementList(elem.$blocks(), lineno);
-    if (!elem.text['$nil?']()) {
+    if (!elem.text["$nil?"]()) {
       children.unshift(this.createParagraph(elem.text, lineno));
     }
     if (children.length === 0) {
@@ -283,14 +286,6 @@ class Converter {
         raw: ""
       }
     ];
-  }
-
-  convertAdmonition(elem, { min, max }) {
-    return this.convertElementList(elem.$blocks(), {
-      min,
-      max,
-      update: false
-    });
   }
 
   createParagraph(raw, lineno) {
