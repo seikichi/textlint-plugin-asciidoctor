@@ -50,6 +50,7 @@
     "clean": "rimraf lib/",
     "fix": "prettier --write src/**/*.js test/**/*.js bin/**/*.js",
     "prepublish": "npm run --if-present build",
-    "test": "jest"
+    "test": "jest",
+    "updateSnapshot": "jest --updateSnapshot"
   }
 }
