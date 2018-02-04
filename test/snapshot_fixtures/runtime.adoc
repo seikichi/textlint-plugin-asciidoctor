@@ -1,0 +1,206 @@
+= Asciidoctor Runtime Information
+Dan Allen <http://github.com/mojavelinux>
+v1.0.3, 2017-08-01
+:imagesdir: images
+:experimental:
+:toc: preamble
+:toc-title: pass:[<b>Contents</b>]
+ifdef::env-github[]
+:tip-caption: :bulb:
+endif::[]
+ifndef::env-github[]
+:idprefix:
+:idseparator: -
+endif::[]
+
+This file shows information about the current file as well as the version of Asciidoctor running on GitHub.
+It also has some examples to show off the available features in the GitHub environment.
+
+== Environment Info
+
+AsciiDoc implementation footnoteref:[calculated,Calculated value]::
+ifdef::asciidoctor-version[Asciidoctor]
+ifdef::asciidoc-version[AsciiDoc Python]
+
+asciidoctor-version::
+{asciidoctor-version}
+
+safe-mode-name::
+{safe-mode-name}
+
+env::
+{env}
+
+Rendering mode footnoteref:[calculated]::
+ifdef::embedded[embedded]
+ifndef::embedded[standalone]
+
+== File Info
+
+docname::
+{docname}
+
+docfile::
+ifdef::docfile[{docfile}]
+ifndef::docfile[_n/a_]
+
+////
+docdir::
+ifeval::["{docdir}" != ""]
+{docdir}
+endif::[]
+ifeval::["{docdir}" == ""]
+_empty_
+endif::[]
+////
+docdir::
+{docdir}{nbsp}
+
+doctitle::
+{doctitle}
+
+author::
+{author} ({email})
+
+revision::
+{revnumber}
+
+backend::
+{backend}
+
+basebackend::
+{basebackend}
+
+docfilesuffix::
+{docfilesuffix}
+
+outfilesuffix::
+{outfilesuffix}
+
+doctype::
+{doctype}
+
+docdate @ doctime::
+{docdate} @ {doctime}
+
+localdate @ localtime::
+{localdate} @ {localtime}
+
+imagesdir::
+{imagesdir}
+
+== Examples
+
+admonition example::
++
+TIP: The icon is enabled on this tip by setting the `tip-caption` attribute to the emoji short code `:bulb:`.
+You can do the same for all the admonition types.
+
+UTF-8 example::
+µService
+
+source highlighter::
+{source-highlighter}
+
+source code example::
++
+.Ruby code
+[source,ruby]
+puts 'Hello, syntax highlighting!'
+
+image example::
++
+image::tiger.png[Tiger,200,200]
+
+passthrough example::
++++<i title="Yet Another Markup Language">YAML</i> stands for <ins>Y</ins>et <ins>A</ins>nother <ins>M</ins>arkup <ins>L</ins>anguage+++
+
+smart quotes::
+"`Smart quotes`" are so smart!
+
+checklist::
+- [ ] Not done
+- [x] Done
+- [x] Already did it
+
+ordered list numbering offset:: {empty}
++
+[start=10]
+. ten
+. eleven
+. twelve
+
+table header and footer rows:: {empty}
++
+[%header%footer]
+|===
+|Month |Savings
+
+|Jan
+|$100
+
+|Feb
+|$50
+
+2+|Total saved: $150
+|===
+
+include file:: {empty}
++
+--
+include::include.adoc[]
+--
+
+UI macro examples::
+
+  Button (btn):::
+  Click the btn:[OK] button to continue.
+
+  Keybinding (kbd):::
+  Use the keybinding kbd:[Ctrl+Shift+T] to create a new class.
+
+  Menu (menu):::
+  Select menu:View[Zoom > Reset] to reset the zoom level.
+  
+See more <<examples-2>> in this document or the <<article#example-abstract,Example Abstract>> in another document located in this repository.
+  
+== Examples
+
+An example of a first duplicate section title to test auto-generated IDs.
+The ID of this section is examples-1 since the unique_id_start_index compliance value is 1.
+The ID resolves to <<examples-1>>.
+
+* filler
+* filler
+* filler
+* filler
+* filler
+* filler
+* filler
+* filler
+* filler
+* filler
+* filler
+* filler
+* filler
+* filler
+
+== Examples
+
+An example of another duplicate section title to test auto-generated IDs.
+The ID of this section is examples-2 and resolves to <<examples-2>>.
+
+* filler
+* filler
+* filler
+* filler
+* filler
+* filler
+* filler
+* filler
+* filler
+* filler
+* filler
+* filler
+* filler
+* filler
