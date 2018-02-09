@@ -1,7 +1,7 @@
 {
   "name": "textlint-plugin-asciidoctor",
   "description": "yet another asciidoctor plugin for textlnt",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "seikichi",
   "bin": {
     "asciidoc-to-textlint-ast": "./bin/asciidoc-to-textlint-ast.js"
