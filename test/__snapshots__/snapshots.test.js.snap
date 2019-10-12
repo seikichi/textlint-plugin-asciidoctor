@@ -116,12 +116,12 @@ Object {
               "line": 2,
             },
             "start": Object {
-              "column": -1,
+              "column": 0,
               "line": 1,
             },
           },
           "range": Array [
-            -1,
+            0,
             87,
           ],
           "raw": "The Article Title",
@@ -136,12 +136,12 @@ Object {
           "line": 2,
         },
         "start": Object {
-          "column": -1,
+          "column": 0,
           "line": 1,
         },
       },
       "range": Array [
-        -1,
+        0,
         87,
       ],
       "raw": "The Article Title",
@@ -1968,12 +1968,12 @@ of AsciiDoc labeled lists.",
       "line": 124,
     },
     "start": Object {
-      "column": -1,
+      "column": 0,
       "line": 1,
     },
   },
   "range": Array [
-    -1,
+    0,
     3373,
   ],
   "raw": "// NOTE: This is the article example from the AsciiDoc Python project
@@ -2103,6 +2103,99 @@ A glossary term::
 
 A second glossary term::
   The corresponding (indented) definition.",
+  "type": "Document",
+}
+`;
+
+exports[`Snapshot testing Test Snapshot:code comment.adoc 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "loc": Object {
+            "end": Object {
+              "column": 41,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            0,
+            41,
+          ],
+          "raw": "This is CodeBlock that includes comments.",
+          "type": "Str",
+          "value": "This is CodeBlock that includes comments.",
+        },
+      ],
+      "loc": Object {
+        "end": Object {
+          "column": 41,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        41,
+      ],
+      "raw": "This is CodeBlock that includes comments.",
+      "type": "Paragraph",
+    },
+    Object {
+      "lang": "javascript",
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 7,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        68,
+        100,
+      ],
+      "raw": "// comment
+var a = 1;
+// comment",
+      "type": "CodeBlock",
+      "value": "// comment
+var a = 1;
+// comment",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 10,
+      "line": 7,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    100,
+  ],
+  "raw": "This is CodeBlock that includes comments.
+
+[source,javascript]
+----
+// comment
+var a = 1;
+// comment
+----",
   "type": "Document",
 }
 `;

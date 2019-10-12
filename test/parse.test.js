@@ -231,6 +231,25 @@ puts 'Hello, world!'
   );
 });
 
+test("code includes comment", () => {
+  const node = parse(`\
+[source,js]
+----
+// comment
+var foo = 1;
+----
+`);
+  testAST(node);
+  expect(node.children[0]).toEqual(
+      oc({
+        type: "CodeBlock",
+        lang: "js",
+        value: `// comment
+var foo = 1;`
+      })
+  );
+});
+
 test("headings", () => {
   const node = parse(`\
 = Title

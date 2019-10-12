@@ -1,0 +1,8 @@
+This is CodeBlock that includes comments.
+
+[source,javascript]
+----
+// comment
+var a = 1;
+// comment
+----
