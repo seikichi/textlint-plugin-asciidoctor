@@ -225,6 +225,7 @@ puts 'Hello, world!'
   expect(node.children[0]).toEqual(
     oc({
       type: "CodeBlock",
+      lang: "ruby",
       value: "puts 'Hello, world!'"
     })
   );

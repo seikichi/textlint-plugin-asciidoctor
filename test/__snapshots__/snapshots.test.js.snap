@@ -5105,6 +5105,7 @@ first level",
       "type": "Paragraph",
     },
     Object {
+      "lang": "ruby",
       "loc": Object {
         "end": Object {
           "column": 16,
@@ -5132,6 +5133,7 @@ doc = Asciidoctor.load '*This* is http://asciidoc.org[AsciiDoc]!', header_footer
 puts doc.convert",
     },
     Object {
+      "lang": "html",
       "loc": Object {
         "end": Object {
           "column": 7,
@@ -9328,6 +9330,7 @@ Object {
         Object {
           "children": Array [
             Object {
+              "lang": "ruby",
               "loc": Object {
                 "end": Object {
                   "column": 34,

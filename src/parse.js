@@ -143,7 +143,8 @@ class Converter {
       return [];
     }
     const range = this.locationToRange(loc);
-    return [{ type: "CodeBlock", value: raw, loc, range, raw }];
+    const attributes = typeof elem.getAttributes === "function" ? elem.getAttributes() : {};
+    return [{ type: "CodeBlock", lang: attributes.language, value: raw, loc, range, raw }];
   }
 
   convertList(elem, { min, max }) {
