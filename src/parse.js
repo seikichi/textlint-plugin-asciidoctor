@@ -72,7 +72,7 @@ class Converter {
 
   convertHeader(elem, lineno) {
     const raw = elem.title;
-    const loc = this.findLocation([raw], lineno);
+    const loc = this.findLocation([raw], { ...lineno, type: "Header" });
     const range = this.locationToRange(loc);
     return {
       type: "Header",
@@ -86,7 +86,7 @@ class Converter {
 
   convertSection(elem, lineno) {
     const raw = elem.title;
-    const loc = this.findLocation([raw], lineno);
+    const loc = this.findLocation([raw], { ...lineno, type: "Header" });
     if (!loc) {
       return [];
     }
@@ -103,9 +103,9 @@ class Converter {
     return [header, ...children];
   }
 
-  convertParagraph(elem, { min, max }) {
+  convertParagraph(elem, lineno) {
     const raw = elem.$source();
-    const loc = this.findLocation(elem.$lines(), { min, max });
+    const loc = this.findLocation(elem.$lines(), { ...lineno, type: "Paragraph" });
     if (!loc) {
       return [];
     }
@@ -121,11 +121,10 @@ class Converter {
     ];
   }
 
-  convertQuote(elem, { min, max }) {
+  convertQuote(elem, lineno) {
     const raw = ""; // TODO: fix asciidoc/asciidoc
     const children = this.convertElementList(elem.$blocks(), {
-      min,
-      max,
+      ...lineno,
       update: false
     });
     if (children.length === 0) {
@@ -136,9 +135,9 @@ class Converter {
     ];
   }
 
-  convertListing(elem, { min, max }) {
+  convertListing(elem, lineno) {
     const raw = elem.$source();
-    const loc = this.findLocation(elem.$lines(), { min, max });
+    const loc = this.findLocation(elem.$lines(), { ...lineno, type: "CodeBlock" });
     if (!loc) {
       return [];
     }
@@ -147,11 +146,10 @@ class Converter {
     return [{ type: "CodeBlock", lang: attributes.language, value: raw, loc, range, raw }];
   }
 
-  convertList(elem, { min, max }) {
+  convertList(elem, lineno) {
     const raw = ""; // TODO: fix asciidoc/asciidoc
     const children = this.convertElementList(elem.$blocks(), {
-      min,
-      max,
+      ...lineno,
       update: false
     });
     if (children.length === 0) {
@@ -160,7 +158,7 @@ class Converter {
     return [{ type: "List", children, raw, ...this.locAndRangeFrom(children) }];
   }
 
-  convertDefinitionList(elem, { min, max }) {
+  convertDefinitionList(elem, lineno) {
     const raw = ""; // TODO: fix asciidoc/asciidoc
     const concat = Array.prototype.concat;
     const blocks = concat.apply(
@@ -168,8 +166,7 @@ class Converter {
       elem.$blocks().map(([terms, item]) => [...terms, item])
     );
     const children = this.convertElementList(blocks, {
-      min,
-      max,
+      ...lineno,
       update: false
     });
     if (children.length === 0) {
@@ -199,7 +196,7 @@ class Converter {
 
   convertTableCell(elem, lineno) {
     const raw = elem.text;
-    const loc = this.findLocation(raw.split(/\n/), lineno);
+    const loc = this.findLocation(raw.split(/\n/), { ...lineno, type: "TableCell" });
     if (!loc) {
       return [];
     }
@@ -258,12 +255,12 @@ class Converter {
     ];
   }
 
-  convertTable(elem, { min, max }) {
+  convertTable(elem, lineno) {
     let children = [];
     for (let row of elem.$rows().$body()) {
       children = [
         ...children,
-        ...this.convertTableRow(row, { min, max, update: false })
+        ...this.convertTableRow(row, { ...lineno, update: false })
       ];
     }
     if (children.length === 0) {
@@ -286,7 +283,7 @@ class Converter {
   }
 
   createParagraph(raw, lineno) {
-    const loc = this.findLocation(raw.split(/\n/), lineno);
+    const loc = this.findLocation(raw.split(/\n/), { ...lineno, type: "Paragraph" });
     if (!loc) {
       return [];
     }
@@ -334,12 +331,12 @@ class Converter {
     return children;
   }
 
-  findLocation(lines, { min, max }) {
+  findLocation(lines, { min, max, type }) {
     for (let i = min; i + lines.length - 1 <= max; i++) {
       let found = true;
       let offset = 0; // see "comment in paragraph" test case.
       for (let j = 0; j < lines.length; j++) {
-        while (this.lines[i + j - 1 + offset].match(/^\/\//)) {
+        while (type !== "CodeBlock" && this.lines[i + j - 1 + offset].match(/^\/\//)) {
           offset++;
         }
         if (this.lines[i + j - 1 + offset].indexOf(lines[j]) === -1) {
@@ -355,8 +352,10 @@ class Converter {
       const endLineNo = i + lines.length - 1 + offset;
       const endColumn =
         this.lines[endLineNo - 1].indexOf(lastLine) + lastLine.length;
+      const column = this.lines[i - 1].indexOf(lines[0]);
       return {
-        start: { line: i, column: this.lines[i - 1].indexOf(lines[0]) },
+        // If the lines starts with //, set 0 instead of -1
+        start: { line: i, column: column === -1 ? 0 : column },
         end: { line: endLineNo, column: endColumn }
       };
     }
