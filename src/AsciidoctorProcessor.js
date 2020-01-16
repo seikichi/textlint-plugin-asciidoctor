@@ -9,7 +9,7 @@ export class AsciidoctorProcessor {
   }
 
   static availableExtensions() {
-    return [".adoc", ".asciidoctor", ".asc"];
+    return [".adoc", ".asciidoc", ".asc", ".asciidoctor"];
   }
 
   processor(ext) {
