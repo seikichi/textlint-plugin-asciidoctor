@@ -193,6 +193,53 @@ test("labeled list", () => {
   );
 });
 
+test("list with identical text", () => {
+  const node = parse(`\
+First term::
+  definition
+
+Second term::
+  definition
+`);
+
+  testAST(node);
+  expect(node.children[0]).toEqual(
+    oc({
+      type: "List",
+      children: [
+        oc({
+          type: "ListItem",
+          children: [oc({ children: [oc({ value: "First term" })] })]
+        }),
+        oc({
+          type: "ListItem",
+          children: [
+            oc({
+              children: [
+                oc({ value: "definition", loc: oc({ start: oc({ line: 2 }) }) })
+              ]
+            })
+          ]
+        }),
+        oc({
+          type: "ListItem",
+          children: [oc({ children: [oc({ value: "Second term" })] })]
+        }),
+        oc({
+          type: "ListItem",
+          children: [
+            oc({
+              children: [
+                oc({ value: "definition", loc: oc({ start: oc({ line: 5 }) }) })
+              ]
+            })
+          ]
+        })
+      ]
+    })
+  );
+});
+
 test("blockquote", () => {
   const node = parse("____\nblockquote\n____\n");
   testAST(node);
@@ -241,12 +288,12 @@ var foo = 1;
 `);
   testAST(node);
   expect(node.children[0]).toEqual(
-      oc({
-        type: "CodeBlock",
-        lang: "js",
-        value: `// comment
+    oc({
+      type: "CodeBlock",
+      lang: "js",
+      value: `// comment
 var foo = 1;`
-      })
+    })
   );
 });
 
@@ -321,6 +368,89 @@ test("simple table", () => {
             oc({
               type: "TableCell",
               children: [oc({ type: "Str", value: "D" })]
+            })
+          ]
+        })
+      ]
+    })
+  ]);
+});
+
+test("simple table with identical cell text", () => {
+  const node = parse(`\
+|===
+
+|Haystack with needles. |needle
+
+|Chocolate in someone's peanut butter.
+|peanut
+|===
+`);
+
+  testAST(node);
+  expect(node.children).toEqual([
+    oc({
+      type: "Table",
+      children: [
+        oc({
+          type: "TableRow",
+          children: [
+            oc({
+              type: "TableCell",
+              children: [
+                oc({
+                  type: "Str",
+                  value: "Haystack with needles.",
+                  loc: oc({
+                    start: oc({ line: 3, column: 1 }),
+                    end: oc({ line: 3, column: 23 })
+                  })
+                })
+              ]
+            }),
+            oc({
+              type: "TableCell",
+              children: [
+                oc({
+                  type: "Str",
+                  value: "needle",
+                  loc: oc({
+                    start: oc({ line: 3, column: 15 }),
+                    end: oc({ line: 3, column: 21 })
+                  })
+                })
+              ]
+            })
+          ]
+        }),
+        oc({
+          type: "TableRow",
+          children: [
+            oc({
+              type: "TableCell",
+              children: [
+                oc({
+                  type: "Str",
+                  value: "Chocolate in someone's peanut butter.",
+                  loc: oc({
+                    start: oc({ line: 5, column: 1 }),
+                    end: oc({ line: 5, column: 38 })
+                  })
+                })
+              ]
+            }),
+            oc({
+              type: "TableCell",
+              children: [
+                oc({
+                  type: "Str",
+                  value: "peanut",
+                  loc: oc({
+                    start: oc({ line: 6, column: 1 }),
+                    end: oc({ line: 6, column: 7 })
+                  })
+                })
+              ]
             })
           ]
         })
