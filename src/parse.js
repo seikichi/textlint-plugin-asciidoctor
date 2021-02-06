@@ -1,7 +1,7 @@
 // LICENSE : MIT
 "use strict";
 
-const asciidoctor = require("asciidoctor.js")();
+const asciidoctor = require("@asciidoctor/core")();
 
 class Converter {
   convert(text) {
@@ -105,7 +105,10 @@ class Converter {
 
   convertParagraph(elem, lineno) {
     const raw = elem.$source();
-    const loc = this.findLocation(elem.$lines(), { ...lineno, type: "Paragraph" });
+    const loc = this.findLocation(elem.$lines(), {
+      ...lineno,
+      type: "Paragraph"
+    });
     if (!loc) {
       return [];
     }
@@ -137,13 +140,26 @@ class Converter {
 
   convertListing(elem, lineno) {
     const raw = elem.$source();
-    const loc = this.findLocation(elem.$lines(), { ...lineno, type: "CodeBlock" });
+    const loc = this.findLocation(elem.$lines(), {
+      ...lineno,
+      type: "CodeBlock"
+    });
     if (!loc) {
       return [];
     }
     const range = this.locationToRange(loc);
-    const attributes = typeof elem.getAttributes === "function" ? elem.getAttributes() : {};
-    return [{ type: "CodeBlock", lang: attributes.language, value: raw, loc, range, raw }];
+    const attributes =
+      typeof elem.getAttributes === "function" ? elem.getAttributes() : {};
+    return [
+      {
+        type: "CodeBlock",
+        lang: attributes.language,
+        value: raw,
+        loc,
+        range,
+        raw
+      }
+    ];
   }
 
   convertList(elem, lineno) {
@@ -196,7 +212,10 @@ class Converter {
 
   convertTableCell(elem, lineno) {
     const raw = elem.text;
-    const loc = this.findLocation(raw.split(/\n/), { ...lineno, type: "TableCell" });
+    const loc = this.findLocation(raw.split(/\n/), {
+      ...lineno,
+      type: "TableCell"
+    });
     if (!loc) {
       return [];
     }
@@ -234,6 +253,18 @@ class Converter {
   convertTableRow(row, lineno) {
     let children = [];
     for (let cell of row) {
+      // If the cell has a preceding sibling and the sibling is on the same
+      // line number, add an offset to the lineno variable so that
+      // findLocation() begins its search from the end of the preceding sibling.
+      lineno.min = cell.getLineNumber();
+      if (children.length > 0) {
+        const sibling = children[children.length - 1];
+        if (sibling.loc.end.line === lineno.min) {
+          lineno.startIdx = sibling.loc.end.column;
+        } else {
+          lineno.startIdx = 0; // Else, search from the beginning of the line.
+        }
+      }
       children = [...children, ...this.convertTableCell(cell, lineno)];
     }
     if (children.length === 0) {
@@ -257,7 +288,13 @@ class Converter {
 
   convertTable(elem, lineno) {
     let children = [];
-    for (let row of elem.$rows().$body()) {
+
+    for (let row of elem.getBodyRows()) {
+      // Set the minimum line number to the line number of
+      // the first cell.  Making this change prevents the
+      // findLocation() function from locating text in this
+      // row as a substring of a preceding row.
+      lineno.min = row[0].getLineNumber();
       children = [
         ...children,
         ...this.convertTableRow(row, { ...lineno, update: false })
@@ -283,7 +320,10 @@ class Converter {
   }
 
   createParagraph(raw, lineno) {
-    const loc = this.findLocation(raw.split(/\n/), { ...lineno, type: "Paragraph" });
+    const loc = this.findLocation(raw.split(/\n/), {
+      ...lineno,
+      type: "Paragraph"
+    });
     if (!loc) {
       return [];
     }
@@ -320,26 +360,32 @@ class Converter {
     let children = [];
     for (let i = 0; i < elements.length; i++) {
       let next = { min, max, update };
-      if (update) {
-        next.min = elements[i].$lineno();
-        if (i + 1 < elements.length) {
-          next.max = elements[i + 1].$lineno();
-        }
+      // Not updating definitely causes trouble.
+      // I can't find a case in which updating causes trouble.
+      //  if (update) {
+      next.min = elements[i].$lineno();
+      if (i + 1 < elements.length) {
+        next.max = elements[i + 1].$lineno();
       }
+      // }
       children = children.concat(this.convertElement(elements[i], next));
     }
     return children;
   }
 
-  findLocation(lines, { min, max, type }) {
+  findLocation(lines, { min, max, type, startIdx }) {
     for (let i = min; i + lines.length - 1 <= max; i++) {
       let found = true;
       let offset = 0; // see "comment in paragraph" test case.
+      startIdx = startIdx || 0; // index into the line to begin the search
       for (let j = 0; j < lines.length; j++) {
-        while (type !== "CodeBlock" && this.lines[i + j - 1 + offset].match(/^\/\//)) {
+        while (
+          type !== "CodeBlock" &&
+          this.lines[i + j - 1 + offset].match(/^\/\//)
+        ) {
           offset++;
         }
-        if (this.lines[i + j - 1 + offset].indexOf(lines[j]) === -1) {
+        if (this.lines[i + j - 1 + offset].indexOf(lines[j], startIdx) === -1) {
           found = false;
           break;
         }

@@ -9,9 +9,6 @@
   "bugs": {
     "url": "https://github.com/seikichi/textlint-plugin-asciidoctor/issues"
   },
-  "dependencies": {
-    "asciidoctor.js": "^1.5.9"
-  },
   "devDependencies": {
     "@babel/cli": "^7.10.3",
     "@babel/core": "^7.10.3",
@@ -54,5 +51,8 @@
     "prepublish": "npm run --if-present build",
     "test": "jest --env node",
     "updateSnapshot": "jest --env node --updateSnapshot"
+  },
+  "dependencies": {
+    "@asciidoctor/core": "^2.1.0"
   }
 }
