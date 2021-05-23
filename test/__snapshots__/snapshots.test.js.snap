@@ -13713,3 +13713,245 @@ The ID of this section is examples-2 and resolves to <<examples-2>>.
   "type": "Document",
 }
 `;
+
+exports[`Snapshot testing Test Snapshot:table.adoc 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 2,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 1,
+                      "line": 2,
+                    },
+                  },
+                  "range": Array [
+                    6,
+                    7,
+                  ],
+                  "raw": "A",
+                  "type": "Str",
+                  "value": "A",
+                },
+              ],
+              "loc": Object {
+                "end": Object {
+                  "column": 2,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 1,
+                  "line": 2,
+                },
+              },
+              "range": Array [
+                6,
+                7,
+              ],
+              "raw": "A",
+              "type": "TableCell",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 17,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 3,
+                      "line": 2,
+                    },
+                  },
+                  "range": Array [
+                    8,
+                    22,
+                  ],
+                  "raw": "identical text",
+                  "type": "Str",
+                  "value": "identical text",
+                },
+              ],
+              "loc": Object {
+                "end": Object {
+                  "column": 17,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 3,
+                  "line": 2,
+                },
+              },
+              "range": Array [
+                8,
+                22,
+              ],
+              "raw": "identical text",
+              "type": "TableCell",
+            },
+          ],
+          "loc": Object {
+            "end": Object {
+              "column": 17,
+              "line": 2,
+            },
+            "start": Object {
+              "column": 1,
+              "line": 2,
+            },
+          },
+          "range": Array [
+            6,
+            22,
+          ],
+          "raw": "",
+          "type": "TableRow",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 17,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 3,
+                      "line": 2,
+                    },
+                  },
+                  "range": Array [
+                    8,
+                    22,
+                  ],
+                  "raw": "identical text",
+                  "type": "Str",
+                  "value": "identical text",
+                },
+              ],
+              "loc": Object {
+                "end": Object {
+                  "column": 17,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 3,
+                  "line": 2,
+                },
+              },
+              "range": Array [
+                8,
+                22,
+              ],
+              "raw": "identical text",
+              "type": "TableCell",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 2,
+                      "line": 3,
+                    },
+                    "start": Object {
+                      "column": 1,
+                      "line": 3,
+                    },
+                  },
+                  "range": Array [
+                    24,
+                    25,
+                  ],
+                  "raw": "C",
+                  "type": "Str",
+                  "value": "C",
+                },
+              ],
+              "loc": Object {
+                "end": Object {
+                  "column": 2,
+                  "line": 3,
+                },
+                "start": Object {
+                  "column": 1,
+                  "line": 3,
+                },
+              },
+              "range": Array [
+                24,
+                25,
+              ],
+              "raw": "C",
+              "type": "TableCell",
+            },
+          ],
+          "loc": Object {
+            "end": Object {
+              "column": 2,
+              "line": 3,
+            },
+            "start": Object {
+              "column": 3,
+              "line": 2,
+            },
+          },
+          "range": Array [
+            8,
+            25,
+          ],
+          "raw": "",
+          "type": "TableRow",
+        },
+      ],
+      "loc": Object {
+        "end": Object {
+          "column": 2,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        6,
+        25,
+      ],
+      "raw": "",
+      "type": "Table",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 2,
+      "line": 3,
+    },
+    "start": Object {
+      "column": 1,
+      "line": 2,
+    },
+  },
+  "range": Array [
+    6,
+    25,
+  ],
+  "raw": "|===
+|A|identical text
+|C|identical text
+|===",
+  "type": "Document",
+}
+`;
