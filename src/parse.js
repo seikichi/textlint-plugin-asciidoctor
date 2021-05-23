@@ -300,9 +300,14 @@ class Converter {
   }
 
   locAndRangeFrom(children) {
+    // In ListItem does not sort the loc in sometimes
+    // sort ascending order explicitly
+    const sortedChildren = children.slice().sort((childA, childB) => {
+      return childA.range[0] > childB.range[0] ? 1 : -1
+    });
     const loc = {
-      start: children[0].loc.start,
-      end: children[children.length - 1].loc.end
+      start: sortedChildren[0].loc.start,
+      end: sortedChildren[sortedChildren.length - 1].loc.end
     };
     const range = this.locationToRange(loc);
     return { loc, range };

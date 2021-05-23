@@ -1946,8 +1946,8 @@ of AsciiDoc labeled lists.",
       ],
       "loc": Object {
         "end": Object {
-          "column": 42,
-          "line": 124,
+          "column": 22,
+          "line": 126,
         },
         "start": Object {
           "column": 0,
@@ -1956,7 +1956,7 @@ of AsciiDoc labeled lists.",
       },
       "range": Array [
         3313,
-        3373,
+        3397,
       ],
       "raw": "",
       "type": "List",
@@ -1964,8 +1964,8 @@ of AsciiDoc labeled lists.",
   ],
   "loc": Object {
     "end": Object {
-      "column": 42,
-      "line": 124,
+      "column": 22,
+      "line": 126,
     },
     "start": Object {
       "column": 0,
@@ -1974,7 +1974,7 @@ of AsciiDoc labeled lists.",
   },
   "range": Array [
     0,
-    3373,
+    3397,
   ],
   "raw": "// NOTE: This is the article example from the AsciiDoc Python project
 The Article Title
@@ -4036,17 +4036,17 @@ and continue typing on the next line.",
               ],
               "loc": Object {
                 "end": Object {
-                  "column": 13,
-                  "line": 92,
+                  "column": 11,
+                  "line": 96,
                 },
                 "start": Object {
-                  "column": 2,
-                  "line": 96,
+                  "column": 8,
+                  "line": 92,
                 },
               },
               "range": Array [
-                2917,
-                2842,
+                2837,
+                2926,
               ],
               "raw": "",
               "type": "List",
@@ -4054,17 +4054,17 @@ and continue typing on the next line.",
           ],
           "loc": Object {
             "end": Object {
-              "column": 13,
-              "line": 92,
+              "column": 26,
+              "line": 95,
             },
             "start": Object {
-              "column": 2,
-              "line": 95,
+              "column": 8,
+              "line": 92,
             },
           },
           "range": Array [
-            2890,
-            2842,
+            2837,
+            2914,
           ],
           "raw": "",
           "type": "ListItem",
@@ -4072,8 +4072,8 @@ and continue typing on the next line.",
       ],
       "loc": Object {
         "end": Object {
-          "column": 13,
-          "line": 92,
+          "column": 20,
+          "line": 94,
         },
         "start": Object {
           "column": 2,
@@ -4082,7 +4082,7 @@ and continue typing on the next line.",
       },
       "range": Array [
         2831,
-        2842,
+        2887,
       ],
       "raw": "",
       "type": "List",
@@ -6595,6 +6595,328 @@ No additional settings are needed in order for this to work on GitHub.",
   ],
   "raw": "This page shows an example of an inter-document cross reference (i.e., xref) to <<article#,article{outfilesuffix}>> from this document, {docname}{docfilesuffix}.
 No additional settings are needed in order for this to work on GitHub.",
+  "type": "Document",
+}
+`;
+
+exports[`Snapshot testing Test Snapshot:list.adoc 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 3,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 2,
+                      "line": 1,
+                    },
+                  },
+                  "range": Array [
+                    2,
+                    3,
+                  ],
+                  "raw": "A",
+                  "type": "Str",
+                  "value": "A",
+                },
+              ],
+              "loc": Object {
+                "end": Object {
+                  "column": 3,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 2,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                2,
+                3,
+              ],
+              "raw": "A",
+              "type": "Paragraph",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [
+                    Object {
+                      "children": Array [
+                        Object {
+                          "loc": Object {
+                            "end": Object {
+                              "column": 12,
+                              "line": 2,
+                            },
+                            "start": Object {
+                              "column": 3,
+                              "line": 2,
+                            },
+                          },
+                          "range": Array [
+                            7,
+                            16,
+                          ],
+                          "raw": "A**Fail**",
+                          "type": "Str",
+                          "value": "A**Fail**",
+                        },
+                      ],
+                      "loc": Object {
+                        "end": Object {
+                          "column": 12,
+                          "line": 2,
+                        },
+                        "start": Object {
+                          "column": 3,
+                          "line": 2,
+                        },
+                      },
+                      "range": Array [
+                        7,
+                        16,
+                      ],
+                      "raw": "A**Fail**",
+                      "type": "Paragraph",
+                    },
+                  ],
+                  "loc": Object {
+                    "end": Object {
+                      "column": 12,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 3,
+                      "line": 2,
+                    },
+                  },
+                  "range": Array [
+                    7,
+                    16,
+                  ],
+                  "raw": "",
+                  "type": "ListItem",
+                },
+              ],
+              "loc": Object {
+                "end": Object {
+                  "column": 12,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 3,
+                  "line": 2,
+                },
+              },
+              "range": Array [
+                7,
+                16,
+              ],
+              "raw": "",
+              "type": "List",
+            },
+          ],
+          "loc": Object {
+            "end": Object {
+              "column": 12,
+              "line": 2,
+            },
+            "start": Object {
+              "column": 2,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            2,
+            16,
+          ],
+          "raw": "",
+          "type": "ListItem",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 3,
+                      "line": 3,
+                    },
+                    "start": Object {
+                      "column": 2,
+                      "line": 3,
+                    },
+                  },
+                  "range": Array [
+                    19,
+                    20,
+                  ],
+                  "raw": "B",
+                  "type": "Str",
+                  "value": "B",
+                },
+              ],
+              "loc": Object {
+                "end": Object {
+                  "column": 3,
+                  "line": 3,
+                },
+                "start": Object {
+                  "column": 2,
+                  "line": 3,
+                },
+              },
+              "range": Array [
+                19,
+                20,
+              ],
+              "raw": "B",
+              "type": "Paragraph",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [
+                    Object {
+                      "children": Array [
+                        Object {
+                          "loc": Object {
+                            "end": Object {
+                              "column": 12,
+                              "line": 2,
+                            },
+                            "start": Object {
+                              "column": 3,
+                              "line": 2,
+                            },
+                          },
+                          "range": Array [
+                            7,
+                            16,
+                          ],
+                          "raw": "A**Fail**",
+                          "type": "Str",
+                          "value": "A**Fail**",
+                        },
+                      ],
+                      "loc": Object {
+                        "end": Object {
+                          "column": 12,
+                          "line": 2,
+                        },
+                        "start": Object {
+                          "column": 3,
+                          "line": 2,
+                        },
+                      },
+                      "range": Array [
+                        7,
+                        16,
+                      ],
+                      "raw": "A**Fail**",
+                      "type": "Paragraph",
+                    },
+                  ],
+                  "loc": Object {
+                    "end": Object {
+                      "column": 12,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 3,
+                      "line": 2,
+                    },
+                  },
+                  "range": Array [
+                    7,
+                    16,
+                  ],
+                  "raw": "",
+                  "type": "ListItem",
+                },
+              ],
+              "loc": Object {
+                "end": Object {
+                  "column": 12,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 3,
+                  "line": 2,
+                },
+              },
+              "range": Array [
+                7,
+                16,
+              ],
+              "raw": "",
+              "type": "List",
+            },
+          ],
+          "loc": Object {
+            "end": Object {
+              "column": 3,
+              "line": 3,
+            },
+            "start": Object {
+              "column": 3,
+              "line": 2,
+            },
+          },
+          "range": Array [
+            7,
+            20,
+          ],
+          "raw": "",
+          "type": "ListItem",
+        },
+      ],
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 2,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        2,
+        20,
+      ],
+      "raw": "",
+      "type": "List",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 3,
+      "line": 3,
+    },
+    "start": Object {
+      "column": 2,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    2,
+    20,
+  ],
+  "raw": "* A
+** A**Fail**
+* B
+** A**Fail**",
   "type": "Document",
 }
 `;
