@@ -3,6 +3,11 @@
 
 const asciidoctor = require("asciidoctor.js")();
 
+function sortChildrenByRange(children){
+  return children.slice().sort((childA, childB) => {
+    return childA.range[0] > childB.range[0] ? 1 : -1
+  });
+}
 class Converter {
   convert(text) {
     const doc = asciidoctor.load(text, { sourcemap: true });
@@ -239,15 +244,16 @@ class Converter {
     if (children.length === 0) {
       return [];
     }
+    const sortedChildren = sortChildrenByRange(children);
     const loc = {
-      start: children[0].loc.start,
-      end: children[children.length - 1].loc.end
+      start: sortedChildren[0].loc.start,
+      end: sortedChildren[sortedChildren.length - 1].loc.end
     };
     const range = this.locationToRange(loc);
     return [
       {
         type: "TableRow",
-        children,
+        children:sortedChildren,
         loc,
         range,
         raw: ""
@@ -266,15 +272,20 @@ class Converter {
     if (children.length === 0) {
       return [];
     }
+    // In ListItem does not sort the loc in sometimes
+    // sort ascending order explicitly
+    const sortedChildren = children.slice().sort((childA, childB) => {
+      return childA.range[0] > childB.range[0] ? 1 : -1
+    });
     const loc = {
-      start: children[0].loc.start,
-      end: children[children.length - 1].loc.end
+      start: sortedChildren[0].loc.start,
+      end: sortedChildren[sortedChildren.length - 1].loc.end
     };
     const range = this.locationToRange(loc);
     return [
       {
         type: "Table",
-        children,
+        children: sortedChildren,
         loc,
         range,
         raw: ""
@@ -300,9 +311,12 @@ class Converter {
   }
 
   locAndRangeFrom(children) {
+    // In ListItem does not sort the loc in sometimes
+    // sort ascending order explicitly
+    const sortedChildren = sortChildrenByRange(children);
     const loc = {
-      start: children[0].loc.start,
-      end: children[children.length - 1].loc.end
+      start: sortedChildren[0].loc.start,
+      end: sortedChildren[sortedChildren.length - 1].loc.end
     };
     const range = this.locationToRange(loc);
     return { loc, range };

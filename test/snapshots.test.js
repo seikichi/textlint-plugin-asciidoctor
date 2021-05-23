@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 import parse from "../src/parse";
+import { test as testAST } from "@textlint/ast-tester";
 const fixturesDir = path.join(__dirname, "snapshot_fixtures");
 
 describe("Snapshot testing", () => {
@@ -10,6 +11,7 @@ describe("Snapshot testing", () => {
       const fixtureFileName = path.join(fixturesDir, caseName);
       const actualContent = fs.readFileSync(fixtureFileName, "utf-8");
       const actual = parse(actualContent);
+      testAST(actual);
       expect(actual).toMatchSnapshot();
     });
   });
